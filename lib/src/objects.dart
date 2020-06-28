@@ -26,12 +26,12 @@ abstract class Shape {
     return shapeCount;
   }
 
-  @override
-  String toString(); // Abstract when missing body (implicit).
-
   int getId() {
     return this._id;
   }
+
+  @override
+  String toString(); // Abstract when missing body (implicit).
 }
 
 class Circle extends Shape {
@@ -82,25 +82,33 @@ class ForceVector {
     return vectorCount;
   }
 
+  int getId() {
+    return _id;
+  }
+
   @override
   String toString() {
     return "Force vector, id=$_id of magnitude: $magnitude and direction: $direction applied at x=$locX, y=$locY.";
   }
-  int getId() {
-    return _id;
-  }
 }
 
-class WorldStateSnapshot {
+class Snapshot {
   double gravityMagnitude;
   double gravityDirection;
   double fluidDensity; // Default fluid of non-enclosed areas in snapshot.
   List<Shape> shapeList;
   List<ForceVector> forceVectorList;
 
-  WorldStateSnapshot(this.gravityMagnitude, this.gravityDirection, this.fluidDensity) {
+  Snapshot(this.gravityMagnitude, this.gravityDirection, this.fluidDensity) { // Use default values and allow instantiation with shape/vector lists instead?
     this.shapeList = List<Shape>();
     this.forceVectorList = List<ForceVector>();
+  }
+
+  void removeShapeAt(int shapeId) {
+    shapeList.removeAt(shapeId - 1);
+  }
+  void removeForceVectorAt(int forceVectorId) {
+    forceVectorList.removeAt(forceVectorId - 1);
   }
 
   @override
